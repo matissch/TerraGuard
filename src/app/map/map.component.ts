@@ -3,6 +3,16 @@ import { tileLayer, latLng, marker, Marker, icon, Map } from 'leaflet';
 import * as L from 'leaflet'; // Import the L namespace
 import * as proj4 from 'proj4';
 import 'proj4leaflet';
+import { fetchWeatherApi } from 'openmeteo';
+
+const normalTemperature = 10;
+const normalPrecipitation = 0.1;
+const normalRain = 0.1;
+const normalSnowfall = 0.01;
+const normalSnowDepth = 0.015;
+const normalWindSpeed10m = 10;
+const normalWindSpeed100m = 20;
+const normalWindGusts10m = 15;
 
 @Component({
   selector: 'app-map',
@@ -43,7 +53,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.map = new Map('map').setView(this.options.center, this.options.zoom);
-    
+
     // Add OpenStreetMap base layer
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -68,12 +78,12 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
-  searchAddress() {
+  async searchAddress() {
     if (!this.address) return;
 
     console.log('Searching for address:', this.address);
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.address}`)
+    await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.address}`)
       .then(response => response.json())
       .then(data => {
         console.log('Search results:', data);
@@ -82,6 +92,7 @@ export class MapComponent implements AfterViewInit {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
           this.updateMap(lat, lon);
+          this.getWeather(lat, lon);
         } else {
           alert('Address not found');
         }
@@ -107,6 +118,136 @@ export class MapComponent implements AfterViewInit {
     console.log('Map updated to center:', newCenter);
   }
 
+
+  async fetchWeather(lat: number, lon: number) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    var end_date = yyyy + '-' + mm + '-' + dd;
+    var start_date = yyyy - 10 + '-' + mm + '-' + dd;
+
+    const params = {
+      "latitude": lat,
+      "longitude": lon,
+      "start_date": start_date,
+      "end_date": end_date,
+      "hourly": ["temperature_2m", "precipitation", "rain", "snowfall", "snow_depth", "wind_speed_10m", "wind_speed_100m", "wind_gusts_10m"]
+    };
+    const url = "https://archive-api.open-meteo.com/v1/archive";
+    const responses = await fetchWeatherApi(url, params);
+
+    // Helper function to form time ranges
+    const range = (start: number, stop: number, step: number) =>
+      Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+
+    // Process first location. Add a for-loop for multiple locations or weather models
+    const response = responses[0];
+
+    // Attributes for timezone and location
+    const utcOffsetSeconds = response.utcOffsetSeconds();
+    const timezone = response.timezone();
+    const timezoneAbbreviation = response.timezoneAbbreviation();
+    const latitude = response.latitude();
+    const longitude = response.longitude();
+
+    const hourly = response.hourly()!;
+
+    // Note: The order of weather variables in the URL query and the indices below need to match!
+    return {
+      hourly: {
+        time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
+          (t) => new Date((t + utcOffsetSeconds) * 1000)
+        ),
+        temperature2m: hourly.variables(0)!.valuesArray()!,
+        precipitation: hourly.variables(1)!.valuesArray()!,
+        rain: hourly.variables(2)!.valuesArray()!,
+        snowfall: hourly.variables(3)!.valuesArray()!,
+        snowDepth: hourly.variables(4)!.valuesArray()!,
+        windSpeed10m: hourly.variables(5)!.valuesArray()!,
+        windSpeed100m: hourly.variables(6)!.valuesArray()!,
+        windGusts10m: hourly.variables(7)!.valuesArray()!,
+      },
+    };
+  }
+
+  // Function to calculate the average of an array
+  average(arr: Float32Array) {
+    const numericValues = arr.filter(value => typeof value === 'number' && !isNaN(value));
+    if (numericValues.length === 0) return NaN;
+    return numericValues.reduce((p, c) => p + c, 0) / numericValues.length;
+  };
+
+  calculateScore(value: number, normalValue: number) {
+    // Berechne das Verhältnis in Prozent
+    const ratio = (value / normalValue) * 100;
+
+    // Bestimme den Score basierend auf den Schwellenwerten
+    let score;
+    // Normalisiere den Score basierend auf dem Verhältnis
+    if (ratio <= 100) {
+      // Falls avgTemp <= allTemp, normalisiere den Score zwischen 0 und 50
+      score = (ratio / 100) * 50;
+    } else if (ratio > 100) {
+      // Falls avgTemp > allTemp, normalisiere den Score zwischen 50 und 100
+      score = 50 + ((ratio - 100) / 100) * 50;
+      // Begrenze den Score auf maximal 100
+      if (score > 100) score = 100;
+    }
+    return Math.round(score); // Runden auf eine ganze Zahl
+
+  }
+
+  // Main function to fetch data and calculate averages
+  async getWeather(lat: number, lon: number) {
+    try {
+      // Wait for weather data to be fetched
+      const weatherData = await this.fetchWeather(lat, lon);
+
+      // Calculate averages once data is fully loaded
+      const avgTemp = this.average(weatherData.hourly.temperature2m);
+      const avgPrecipitation = this.average(weatherData.hourly.precipitation);
+      const avgRain = this.average(weatherData.hourly.rain);
+      const avgSnowfall = this.average(weatherData.hourly.snowfall);
+      const avgSnowDepth = this.average(weatherData.hourly.snowDepth);
+      const avgWindSpeed10m = this.average(weatherData.hourly.windSpeed10m);
+      const avgWindSpeed100m = this.average(weatherData.hourly.windSpeed100m);
+      const avgWindGusts10m = this.average(weatherData.hourly.windGusts10m);
+
+      // Log averages
+      console.log("Average temperature:", avgTemp);
+      console.log("Average precipitation:", avgPrecipitation);
+      console.log("Average rain:", avgRain);
+      console.log("Average snowfall:", avgSnowfall);
+      console.log("Average snow depth:", avgSnowDepth);
+      console.log("Average wind speed at 10m:", avgWindSpeed10m);
+      console.log("Average wind speed at 100m:", avgWindSpeed100m);
+      console.log("Average wind gusts at 10m:", avgWindGusts10m);
+
+      const scoreTemp = this.calculateScore(avgTemp, normalTemperature);
+      const scorePrecipitation = this.calculateScore(avgPrecipitation, normalPrecipitation);
+      const scoreRain = this.calculateScore(avgRain, normalRain);
+      const scoreSnowfall = this.calculateScore(avgSnowfall, normalSnowfall);
+      const scoreSnowDepth = this.calculateScore(avgSnowDepth, normalSnowDepth);
+      const scoreWindSpeed10m = this.calculateScore(avgWindSpeed10m, normalWindSpeed10m);
+      const scoreWindSpeed100m = this.calculateScore(avgWindSpeed100m, normalWindSpeed100m);
+      const scoreWindGusts10m = this.calculateScore(avgWindGusts10m, normalWindGusts10m);
+
+      console.log("Score temperature:", scoreTemp);
+      console.log("Score precipitation:", scorePrecipitation);
+      console.log("Score rain:", scoreRain);
+      console.log("Score snowfall:", scoreSnowfall);
+      console.log("Score snow depth:", scoreSnowDepth);
+      console.log("Score wind speed at 10m:", scoreWindSpeed10m);
+      console.log("Score wind speed at 100m:", scoreWindSpeed100m);
+      console.log("Score wind gusts at 10m:", scoreWindGusts10m);
+
+
+
+    } catch (error) {
+      console.error("Error fetching or calculating data:", error);
+      
   toggleLayer(event: any) {
     const layer = event.source.name;
     const isChecked = event.checked;
