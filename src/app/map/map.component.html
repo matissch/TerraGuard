@@ -1,3 +1,6 @@
+<div class="search-title-container">
+  <h1 class="centered-title">Search your address!</h1>
+</div>
 <div class="search-container">
   <mat-form-field appearance="outline">
     <mat-label>Enter address</mat-label>
@@ -5,7 +8,7 @@
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="searchAddress()">Search</button>
 </div>
-<div class="toggle-container" style="position: relative;">
+<div class="toggle-container" style="position: relative; padding-left: 150px;">
   <mat-slide-toggle color="primary" name="hailToggle" [(ngModel)]="hail" (change)="toggleLayer($event)">Hail</mat-slide-toggle>
   <mat-slide-toggle color="primary" name="rainToggle" [(ngModel)]="rain" (change)="toggleLayer($event)">Rain</mat-slide-toggle>
 </div>
