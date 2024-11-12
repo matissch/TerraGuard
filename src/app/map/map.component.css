@@ -1,22 +1,16 @@
-.container {
-    text-align: center;
-    margin-top: 20px;
-  }
-  
-  .search-container {
-    margin-bottom: 20px;
-  }
-  
-  input {
-    width: 300px;
-    padding: 10px;
-    margin-right: 10px;
-  }
-  
-  button {
-    padding: 10px 20px;
-  }
-  
-  div[leaflet] {
-    height: 500px; /* Ensure the map container has a defined height */
-  }
+.search-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-container mat-form-field {
+  margin-right: 10px;
+  width: 300px; /* Adjust the width as needed */
+}
+
+.search-container button {
+  padding: 0 16px;
+  font-size: 1em;
+}

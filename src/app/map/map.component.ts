@@ -30,13 +30,13 @@ export class MapComponent implements AfterViewInit {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // Add WMS layer from geocat.ch (Switzerland maps)
-    tileLayer.wms('https://wms.geo.admin.ch/', {
-      layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss', // Replace with desired geocat.ch layer
-      format: 'image/png',
-      transparent: true,
-      attribution: 'Map data © geocat.ch'
-    }).addTo(this.map);
+    // // Add WMS layer from geocat.ch (Switzerland maps)
+    // tileLayer.wms('https://wms.geo.admin.ch/', {
+    //   layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss', // Replace with desired geocat.ch layer
+    //   format: 'image/png',
+    //   transparent: true,
+    //   attribution: 'Map data © geocat.ch'
+    // }).addTo(this.map);
 
     // Fetch and add GeoJSON layer
     this.addGeoJSONLayer();

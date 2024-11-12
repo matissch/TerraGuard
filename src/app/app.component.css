@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin: 20px;
+  }
+  
+  .header {
+    margin-bottom: 20px;
+  }
+  
+  .header h1 {
+    font-size: 2.5em; /* Adjust the size as needed */
+  }
+  
+  .content {
+    margin-bottom: 20px;
+  }
+  
+  .info-box {
+    margin-bottom: 20px;
+  }
+  
+  .info-box p {
+    font-size: 1.2em; /* Adjust the size as needed */
+  }

@@ -1,5 +1,8 @@
 <div class="search-container">
-    <input type="text" [(ngModel)]="address" placeholder="Enter address" (keyup.enter)="searchAddress()">
-    <button (click)="searchAddress()">Search</button>
-  </div>
-  <div id="map" style="height: 600px;"></div>
+  <mat-form-field appearance="outline">
+    <mat-label>Enter address</mat-label>
+    <input matInput type="text" [(ngModel)]="address" (keyup.enter)="searchAddress()">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="searchAddress()">Search</button>
+</div>
+<div id="map" style="height: 600px;"></div>
