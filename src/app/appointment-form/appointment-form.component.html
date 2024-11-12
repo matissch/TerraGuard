@@ -1,17 +1,42 @@
 <div class="allRecommendations">
     <div class="recommendation">
-        <h2>Überschwemmungsgefahr</h2>
-
-
-        <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+        <h2>Temperatur</h2>
+        <mat-progress-bar mode="determinate" value={{scoreTemp}}></mat-progress-bar>
     </div>
+
     <div class="recommendation">
-        <h2>Sturm</h2>
-        <mat-progress-bar mode="determinate" value="80"></mat-progress-bar>
+        <h2>Niederschlag</h2>
+        <mat-progress-bar mode="determinate" value={{scorePrec}}></mat-progress-bar>
     </div>
+
     <div class="recommendation">
-        <h2>Hagel</h2>
-        <mat-progress-bar mode="indeterminate" value="80"></mat-progress-bar>
+        <h2>Regen</h2>
+        <mat-progress-bar mode="determinate" value={{scoreRain}}></mat-progress-bar>
+    </div>
+
+    <div class="recommendation">
+        <h2>Schnee</h2>
+        <mat-progress-bar mode="determinate" value={{scoreSnow}}></mat-progress-bar>
+    </div>
+
+    <div class="recommendation">
+        <h2>Schneetiefe</h2>
+        <mat-progress-bar mode="determinate" value={{scoreSnowDepth}}></mat-progress-bar>
+    </div>
+
+    <div class="recommendation">
+        <h2>Windgeschwindigkeit 10m</h2>
+        <mat-progress-bar mode="determinate" value={{scoreWind10m}}></mat-progress-bar>
+    </div>
+
+    <div class="recommendation">
+        <h2>Windgeschwindigkeit 100m</h2>
+        <mat-progress-bar mode="determinate" value={{scoreWind100m}}></mat-progress-bar>
+    </div>
+
+    <div class="recommendation">
+        <h2>Windböe</h2>
+        <mat-progress-bar mode="determinate" value={{scoreWindGust}}></mat-progress-bar>
     </div>
 
     <div class="recommendation">

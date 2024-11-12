@@ -4,6 +4,7 @@ import * as L from 'leaflet'; // Import the L namespace
 import * as proj4 from 'proj4';
 import 'proj4leaflet';
 import { fetchWeatherApi } from 'openmeteo';
+import { SharedService } from '../shared.service';
 
 const normalTemperature = 10;
 const normalPrecipitation = 0.1;
@@ -234,6 +235,17 @@ export class MapComponent implements AfterViewInit {
       const scoreWindSpeed100m = this.calculateScore(avgWindSpeed100m, normalWindSpeed100m);
       const scoreWindGusts10m = this.calculateScore(avgWindGusts10m, normalWindGusts10m);
 
+      this.sharedService.changeScoreTemp(scoreTemp);
+      this.sharedService.changeScorePrecipitation(scorePrecipitation);
+      this.sharedService.changeScoreRain(scoreRain);
+      this.sharedService.changeScoreSnowfall(scoreSnowfall);
+      this.sharedService.changeScoreSnowDepth(scoreSnowDepth);
+      this.sharedService.changeScoreWindSpeed10m(scoreWindSpeed10m);
+      this.sharedService.changeScoreWindSpeed100m(scoreWindSpeed100m);
+      this.sharedService.changeScoreWindGusts10m(scoreWindGusts10m);
+      
+
+
       console.log("Score temperature:", scoreTemp);
       console.log("Score precipitation:", scorePrecipitation);
       console.log("Score rain:", scoreRain);
@@ -291,4 +303,7 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  constructor(private sharedService: SharedService) {}
+
+  
 }
