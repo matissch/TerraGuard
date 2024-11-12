@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 
@@ -35,7 +36,8 @@ import { AppointmentFormComponent } from './appointment-form/appointment-form.co
     MatButtonModule,
     MatFormFieldModule,
     MatProgressBarModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatExpansionModule  
   ],
   providers: [],
   bootstrap: [AppComponent]

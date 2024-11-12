@@ -35,22 +35,6 @@ export class MapComponent implements AfterViewInit {
   layers: Marker<any>[] = [];
   private map: Map;
 
-  private hailLayer = tileLayer('https://wms.geo.admin.ch/', {
-    layers: "ch.meteoschweiz.hagelgefaehrdung-korngroesse_10_jahre",
-    maxZoom: 18,
-    format: 'image/png',
-    transparent: true,
-    attribution: 'Map data © geocat.ch'
-  });
-
-  private rainLayer = tileLayer.wms('https://wms.geo.admin.ch/', {
-    layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss',
-    format: 'image/png',
-    maxZoom: 18,
-    transparent: true,
-    attribution: 'Map data © geocat.ch'
-  });
-
   ngAfterViewInit() {
     this.map = new Map('map').setView(this.options.center, this.options.zoom);
 
@@ -273,7 +257,7 @@ export class MapComponent implements AfterViewInit {
       this.map.removeLayer(this.wmsLayer);
       this.wmsLayer = tileLayer.wms('https://wms.geo.admin.ch/', {
         layers: "ch.meteoschweiz.hagelgefaehrdung-korngroesse_10_jahre",
-        maxZoom: 18,
+        maxZoom: 15,
         format: 'image/png',
         transparent: true,
         opacity: 0.5,
@@ -284,7 +268,7 @@ export class MapComponent implements AfterViewInit {
       this.wmsLayer = tileLayer.wms('https://wms.geo.admin.ch/', {
         layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss',
         format: 'image/png',
-        maxZoom: 18,
+        maxZoom: 15,
         transparent: true,
         attribution: 'Map data © geocat.ch'
       }).addTo(this.map);
