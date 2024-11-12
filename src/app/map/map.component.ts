@@ -24,7 +24,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit() {
     this.map = new Map('map').setView(this.options.center, this.options.zoom);
-    
+
     // Add OpenStreetMap base layer
     tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
@@ -132,35 +132,43 @@ export class MapComponent implements AfterViewInit {
   }
 
   async getWeather(lat: number, lon: number) {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    var end_date  = yyyy + '-' + mm + '-' + dd;
+    var start_date = yyyy - 10 + '-' + mm + '-' + dd;
+
     const params = {
-      "latitude": 47.3769,
-      "longitude": 8.5417,
-      "start_date": "1992-02-28",
-      "end_date": "2024-11-12",
+      "latitude": lat,
+      "longitude": lon,
+      "start_date": start_date,
+      "end_date": end_date,
       "hourly": ["temperature_2m", "precipitation", "rain", "snowfall", "snow_depth", "wind_speed_10m", "wind_speed_100m", "wind_gusts_10m"]
     };
     const url = "https://archive-api.open-meteo.com/v1/archive";
     const responses = await fetchWeatherApi(url, params);
-    
+
     // Helper function to form time ranges
     const range = (start: number, stop: number, step: number) =>
       Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
-    
+
     // Process first location. Add a for-loop for multiple locations or weather models
     const response = responses[0];
-    
+
     // Attributes for timezone and location
     const utcOffsetSeconds = response.utcOffsetSeconds();
     const timezone = response.timezone();
     const timezoneAbbreviation = response.timezoneAbbreviation();
     const latitude = response.latitude();
     const longitude = response.longitude();
-    
+
     const hourly = response.hourly()!;
-    
+
     // Note: The order of weather variables in the URL query and the indices below need to match!
     const weatherData = {
-    
+
       hourly: {
         time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
           (t) => new Date((t + utcOffsetSeconds) * 1000)
@@ -174,22 +182,54 @@ export class MapComponent implements AfterViewInit {
         windSpeed100m: hourly.variables(6)!.valuesArray()!,
         windGusts10m: hourly.variables(7)!.valuesArray()!,
       },
-    
+
     };
-    
-    // `weatherData` now contains a simple structure with arrays for datetime and weather data
+
+    console.log("Weather data number: " + weatherData.hourly.time.length);
+
+    await this.printAverage(weatherData);
+    console.log("Weather data: ", weatherData);
+  }
+
+  async printAverage(weatherData) {
+    //get average of each parameter
+    var sumTemp = 0;
+    var sumPrec = 0;
+    var sumRain = 0;
+    var sumSnow = 0;
+    var sumSnowDepth = 0;
+    var sumWindSpeed10m = 0;
+    var sumWindSpeed100m = 0;
+    var sumWindGusts10m = 0;
+
     for (let i = 0; i < weatherData.hourly.time.length; i++) {
-      console.log(
-        weatherData.hourly.time[i].toISOString(),
-        weatherData.hourly.temperature2m[i],
-        weatherData.hourly.precipitation[i],
-        weatherData.hourly.rain[i],
-        weatherData.hourly.snowfall[i],
-        weatherData.hourly.snowDepth[i],
-        weatherData.hourly.windSpeed10m[i],
-        weatherData.hourly.windSpeed100m[i],
-        weatherData.hourly.windGusts10m[i]
-      );
+      sumTemp += weatherData.hourly.temperature2m[i];
+      sumPrec += weatherData.hourly.precipitation[i];
+      sumRain += weatherData.hourly.rain[i];
+      sumSnow += weatherData.hourly.snowfall[i];
+      sumSnowDepth += weatherData.hourly.snowDepth[i];
+      sumWindSpeed10m += weatherData.hourly.windSpeed10m[i];
+      sumWindSpeed100m += weatherData.hourly.windSpeed100m[i];
+      sumWindGusts10m += weatherData.hourly.windGusts10m[i];
     }
+
+    var avgTemp = sumTemp / weatherData.hourly.time.length;
+    var avgPrec = sumPrec / weatherData.hourly.time.length;
+    var avgRain = sumRain / weatherData.hourly.time.length;
+    var avgSnow = sumSnow / weatherData.hourly.time.length;
+    var avgSnowDepth = sumSnowDepth / weatherData.hourly.time.length;
+    var avgWindSpeed10m = sumWindSpeed10m / weatherData.hourly.time.length;
+    var avgWindSpeed100m = sumWindSpeed100m / weatherData.hourly.time.length;
+    var avgWindGusts10m = sumWindGusts10m / weatherData.hourly.time.length;
+
+    console.log("Weather data of the last 20 years average: ");
+    console.log("Average temperature: " + avgTemp);
+    console.log("Average precipitation: " + avgPrec);
+    console.log("Average rain: " + avgRain);
+    console.log("Average snow: " + avgSnow);
+    console.log("Average snow depth: " + avgSnowDepth);
+    console.log("Average wind speed 10m: " + avgWindSpeed10m);
+    console.log("Average wind speed 100m: " + avgWindSpeed100m);
+    console.log("Average wind gusts 10m: " + avgWindGusts10m);
   }
 }
