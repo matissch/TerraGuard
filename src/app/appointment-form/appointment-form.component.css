@@ -1,0 +1,13 @@
+.appointment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+
+  }
+  
+  mat-card {
+    width: 25%;
+    padding: 2%;
+    margin: 5%;
+  }
