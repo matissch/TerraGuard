@@ -13,10 +13,10 @@ export class MapComponent implements AfterViewInit {
   address: string = '';
   options = {
     layers: [
-      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '© OpenStreetMap contributors' })
+      tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 200, attribution: '© OpenStreetMap contributors' })
     ],
     zoom: 12,
-    center: latLng(37.7749, -122.4194)
+    center: latLng(47.499950, 8.737565)
   };
   layers: Marker<any>[] = [];
   private map: Map;
@@ -30,13 +30,13 @@ export class MapComponent implements AfterViewInit {
       attribution: '© OpenStreetMap contributors'
     }).addTo(this.map);
 
-    // // Add WMS layer from geocat.ch (Switzerland maps)
-    // tileLayer.wms('https://wms.geo.admin.ch/', {
-    //   layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss', // Replace with desired geocat.ch layer
-    //   format: 'image/png',
-    //   transparent: true,
-    //   attribution: 'Map data © geocat.ch'
-    // }).addTo(this.map);
+    // Add WMS layer from geocat.ch (Switzerland maps)
+    tileLayer.wms('https://wms.geo.admin.ch/', {
+      layers: 'ch.bafu.gefaehrdungskarte-oberflaechenabfluss', // Replace with desired geocat.ch layer
+      format: 'image/png',
+      transparent: true,
+      attribution: 'Map data © geocat.ch'
+    }).addTo(this.map);
 
     // Fetch and add GeoJSON layer
     this.addGeoJSONLayer();

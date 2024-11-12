@@ -7,10 +7,11 @@
 
 .search-container mat-form-field {
   margin-right: 10px;
-  width: 300px; /* Adjust the width as needed */
+  width: 50%; /* Adjust the width as needed */
 }
 
 .search-container button {
   padding: 0 16px;
+  margin-bottom: 15px;
   font-size: 1em;
 }
