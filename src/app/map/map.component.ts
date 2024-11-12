@@ -90,7 +90,8 @@ export class MapComponent implements AfterViewInit {
   updateMap(lat: number, lon: number) {
     const newCenter = latLng(lat, lon);
     this.map.setView(newCenter, 15); // Directly update the map center and zoom
-    this.layers = [marker([lat, lon], {
+    // Create a new marker
+    const newMarker = marker([lat, lon], {
       icon: icon({
         iconSize: [25, 41],
         iconAnchor: [13, 41],
@@ -98,8 +99,13 @@ export class MapComponent implements AfterViewInit {
         iconRetinaUrl: 'assets/images/marker-icon-2x.png',
         shadowUrl: 'assets/images/marker-shadow.png'
       })
-    })];
-    console.log('Map updated to center:', newCenter);
+    });
+
+    // Add the marker to the map and to the layers array
+    newMarker.addTo(this.map);
+    this.layers.push(newMarker); // Keep track of all markers
+
+    console.log('Added new marker at:', newCenter);
   }
 
 
