@@ -51,7 +51,7 @@ export class MapComponent implements AfterViewInit {
     });
   }
 
-  private addGeoJSONLayer(): void {
+  private async addGeoJSONLayer(): Promise<void> {
     const geojsonUrl = 'https://data.geo.admin.ch/ch.meteoschweiz.messwerte-niederschlag-10min/ch.meteoschweiz.messwerte-niederschlag-10min_de.json';
 
     // Define the EPSG:2056 projection
@@ -91,12 +91,12 @@ export class MapComponent implements AfterViewInit {
       });
   }
 
-  searchAddress() {
+  async searchAddress() {
     if (!this.address) return;
 
     console.log('Searching for address:', this.address);
 
-    fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.address}`)
+    await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${this.address}`)
       .then(response => response.json())
       .then(data => {
         console.log('Search results:', data);
@@ -131,13 +131,13 @@ export class MapComponent implements AfterViewInit {
     console.log('Map updated to center:', newCenter);
   }
 
-  async getWeather(lat: number, lon: number) {
+  async fetchWeather(lat: number, lon: number) {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, '0');
     var mm = String(today.getMonth() + 1).padStart(2, '0');
     var yyyy = today.getFullYear();
 
-    var end_date  = yyyy + '-' + mm + '-' + dd;
+    var end_date = yyyy + '-' + mm + '-' + dd;
     var start_date = yyyy - 10 + '-' + mm + '-' + dd;
 
     const params = {
@@ -167,8 +167,7 @@ export class MapComponent implements AfterViewInit {
     const hourly = response.hourly()!;
 
     // Note: The order of weather variables in the URL query and the indices below need to match!
-    const weatherData = {
-
+    return {
       hourly: {
         time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
           (t) => new Date((t + utcOffsetSeconds) * 1000)
@@ -182,54 +181,44 @@ export class MapComponent implements AfterViewInit {
         windSpeed100m: hourly.variables(6)!.valuesArray()!,
         windGusts10m: hourly.variables(7)!.valuesArray()!,
       },
-
     };
-
-    console.log("Weather data number: " + weatherData.hourly.time.length);
-
-    await this.printAverage(weatherData);
-    console.log("Weather data: ", weatherData);
   }
 
-  async printAverage(weatherData) {
-    //get average of each parameter
-    var sumTemp = 0;
-    var sumPrec = 0;
-    var sumRain = 0;
-    var sumSnow = 0;
-    var sumSnowDepth = 0;
-    var sumWindSpeed10m = 0;
-    var sumWindSpeed100m = 0;
-    var sumWindGusts10m = 0;
+  // Function to calculate the average of an array
+  average(arr: Float32Array) {
+    const numericValues = arr.filter(value => typeof value === 'number' && !isNaN(value));
+    if (numericValues.length === 0) return NaN;
+    return numericValues.reduce((p, c) => p + c, 0) / numericValues.length;
+  };
 
-    for (let i = 0; i < weatherData.hourly.time.length; i++) {
-      sumTemp += weatherData.hourly.temperature2m[i];
-      sumPrec += weatherData.hourly.precipitation[i];
-      sumRain += weatherData.hourly.rain[i];
-      sumSnow += weatherData.hourly.snowfall[i];
-      sumSnowDepth += weatherData.hourly.snowDepth[i];
-      sumWindSpeed10m += weatherData.hourly.windSpeed10m[i];
-      sumWindSpeed100m += weatherData.hourly.windSpeed100m[i];
-      sumWindGusts10m += weatherData.hourly.windGusts10m[i];
+  // Main function to fetch data and calculate averages
+  async getWeather(lat: number, lon: number) {
+    try {
+      // Wait for weather data to be fetched
+      const weatherData = await this.fetchWeather(lat, lon);
+
+      // Calculate averages once data is fully loaded
+      const avgTemp = this.average(weatherData.hourly.temperature2m);
+      const avgPrecipitation = this.average(weatherData.hourly.precipitation);
+      const avgRain = this.average(weatherData.hourly.rain);
+      const avgSnowfall = this.average(weatherData.hourly.snowfall);
+      const avgSnowDepth = this.average(weatherData.hourly.snowDepth);
+      const avgWindSpeed10m = this.average(weatherData.hourly.windSpeed10m);
+      const avgWindSpeed100m = this.average(weatherData.hourly.windSpeed100m);
+      const avgWindGusts10m = this.average(weatherData.hourly.windGusts10m);
+
+      // Log averages
+      console.log("Average temperature:", avgTemp);
+      console.log("Average precipitation:", avgPrecipitation);
+      console.log("Average rain:", avgRain);
+      console.log("Average snowfall:", avgSnowfall);
+      console.log("Average snow depth:", avgSnowDepth);
+      console.log("Average wind speed at 10m:", avgWindSpeed10m);
+      console.log("Average wind speed at 100m:", avgWindSpeed100m);
+      console.log("Average wind gusts at 10m:", avgWindGusts10m);
+    } catch (error) {
+      console.error("Error fetching or calculating data:", error);
     }
-
-    var avgTemp = sumTemp / weatherData.hourly.time.length;
-    var avgPrec = sumPrec / weatherData.hourly.time.length;
-    var avgRain = sumRain / weatherData.hourly.time.length;
-    var avgSnow = sumSnow / weatherData.hourly.time.length;
-    var avgSnowDepth = sumSnowDepth / weatherData.hourly.time.length;
-    var avgWindSpeed10m = sumWindSpeed10m / weatherData.hourly.time.length;
-    var avgWindSpeed100m = sumWindSpeed100m / weatherData.hourly.time.length;
-    var avgWindGusts10m = sumWindGusts10m / weatherData.hourly.time.length;
-
-    console.log("Weather data of the last 20 years average: ");
-    console.log("Average temperature: " + avgTemp);
-    console.log("Average precipitation: " + avgPrec);
-    console.log("Average rain: " + avgRain);
-    console.log("Average snow: " + avgSnow);
-    console.log("Average snow depth: " + avgSnowDepth);
-    console.log("Average wind speed 10m: " + avgWindSpeed10m);
-    console.log("Average wind speed 100m: " + avgWindSpeed100m);
-    console.log("Average wind gusts 10m: " + avgWindGusts10m);
   }
+
 }
