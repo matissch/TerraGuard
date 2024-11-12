@@ -5,4 +5,8 @@
   </mat-form-field>
   <button mat-raised-button color="primary" (click)="searchAddress()">Search</button>
 </div>
+<div class="toggle-container" style="position: relative; left: 150px;">
+  <mat-slide-toggle color="primary" name="hailToggle" [(ngModel)]="hail" (change)="toggleLayer($event)">Hail</mat-slide-toggle>
+  <mat-slide-toggle color="primary" name="rainToggle" [(ngModel)]="rain" (change)="toggleLayer($event)">Rain</mat-slide-toggle>
+</div>
 <div id="map" style="width: 80%; margin: 0 auto; height: 600px;"></div>
