@@ -22,3 +22,10 @@
   align-items: center;
   height: 600px;
 }
+
+.toggle-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
