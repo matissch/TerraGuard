@@ -247,6 +247,8 @@ export class MapComponent implements AfterViewInit {
 
     } catch (error) {
       console.error("Error fetching or calculating data:", error);
+    }
+  }
       
   toggleLayer(event: any) {
     const layer = event.source.name;
