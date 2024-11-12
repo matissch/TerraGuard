@@ -3,6 +3,7 @@ import { tileLayer, latLng, marker, Marker, icon, Map } from 'leaflet';
 import * as L from 'leaflet'; // Import the L namespace
 import * as proj4 from 'proj4';
 import 'proj4leaflet';
+import { fetchWeatherApi } from 'openmeteo';
 
 @Component({
   selector: 'app-map',
@@ -104,6 +105,7 @@ export class MapComponent implements AfterViewInit {
           const lat = parseFloat(result.lat);
           const lon = parseFloat(result.lon);
           this.updateMap(lat, lon);
+          this.getWeather(lat, lon);
         } else {
           alert('Address not found');
         }
@@ -127,5 +129,67 @@ export class MapComponent implements AfterViewInit {
       })
     })];
     console.log('Map updated to center:', newCenter);
+  }
+
+  async getWeather(lat: number, lon: number) {
+    const params = {
+      "latitude": 47.3769,
+      "longitude": 8.5417,
+      "start_date": "1992-02-28",
+      "end_date": "2024-11-12",
+      "hourly": ["temperature_2m", "precipitation", "rain", "snowfall", "snow_depth", "wind_speed_10m", "wind_speed_100m", "wind_gusts_10m"]
+    };
+    const url = "https://archive-api.open-meteo.com/v1/archive";
+    const responses = await fetchWeatherApi(url, params);
+    
+    // Helper function to form time ranges
+    const range = (start: number, stop: number, step: number) =>
+      Array.from({ length: (stop - start) / step }, (_, i) => start + i * step);
+    
+    // Process first location. Add a for-loop for multiple locations or weather models
+    const response = responses[0];
+    
+    // Attributes for timezone and location
+    const utcOffsetSeconds = response.utcOffsetSeconds();
+    const timezone = response.timezone();
+    const timezoneAbbreviation = response.timezoneAbbreviation();
+    const latitude = response.latitude();
+    const longitude = response.longitude();
+    
+    const hourly = response.hourly()!;
+    
+    // Note: The order of weather variables in the URL query and the indices below need to match!
+    const weatherData = {
+    
+      hourly: {
+        time: range(Number(hourly.time()), Number(hourly.timeEnd()), hourly.interval()).map(
+          (t) => new Date((t + utcOffsetSeconds) * 1000)
+        ),
+        temperature2m: hourly.variables(0)!.valuesArray()!,
+        precipitation: hourly.variables(1)!.valuesArray()!,
+        rain: hourly.variables(2)!.valuesArray()!,
+        snowfall: hourly.variables(3)!.valuesArray()!,
+        snowDepth: hourly.variables(4)!.valuesArray()!,
+        windSpeed10m: hourly.variables(5)!.valuesArray()!,
+        windSpeed100m: hourly.variables(6)!.valuesArray()!,
+        windGusts10m: hourly.variables(7)!.valuesArray()!,
+      },
+    
+    };
+    
+    // `weatherData` now contains a simple structure with arrays for datetime and weather data
+    for (let i = 0; i < weatherData.hourly.time.length; i++) {
+      console.log(
+        weatherData.hourly.time[i].toISOString(),
+        weatherData.hourly.temperature2m[i],
+        weatherData.hourly.precipitation[i],
+        weatherData.hourly.rain[i],
+        weatherData.hourly.snowfall[i],
+        weatherData.hourly.snowDepth[i],
+        weatherData.hourly.windSpeed10m[i],
+        weatherData.hourly.windSpeed100m[i],
+        weatherData.hourly.windGusts10m[i]
+      );
+    }
   }
 }
