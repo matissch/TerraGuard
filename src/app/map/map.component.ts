@@ -4,6 +4,7 @@ import * as L from 'leaflet'; // Import the L namespace
 import * as proj4 from 'proj4';
 import 'proj4leaflet';
 import { fetchWeatherApi } from 'openmeteo';
+import { SharedService } from '../shared.service';
 
 const normalTemperature = 10;
 const normalPrecipitation = 0.1;
@@ -170,32 +171,23 @@ export class MapComponent implements AfterViewInit {
   };
 
   calculateScore(value: number, normalValue: number) {
-    // Berechne das Verhältnis in Prozent
     const ratio = (value / normalValue) * 100;
 
-    // Bestimme den Score basierend auf den Schwellenwerten
     let score;
-    // Normalisiere den Score basierend auf dem Verhältnis
     if (ratio <= 100) {
-      // Falls avgTemp <= allTemp, normalisiere den Score zwischen 0 und 50
       score = (ratio / 100) * 50;
     } else if (ratio > 100) {
-      // Falls avgTemp > allTemp, normalisiere den Score zwischen 50 und 100
       score = 50 + ((ratio - 100) / 100) * 50;
-      // Begrenze den Score auf maximal 100
       if (score > 100) score = 100;
     }
-    return Math.round(score); // Runden auf eine ganze Zahl
+    return Math.round(score);
 
   }
 
-  // Main function to fetch data and calculate averages
   async getWeather(lat: number, lon: number) {
     try {
-      // Wait for weather data to be fetched
       const weatherData = await this.fetchWeather(lat, lon);
 
-      // Calculate averages once data is fully loaded
       const avgTemp = this.average(weatherData.hourly.temperature2m);
       const avgPrecipitation = this.average(weatherData.hourly.precipitation);
       const avgRain = this.average(weatherData.hourly.rain);
@@ -224,17 +216,14 @@ export class MapComponent implements AfterViewInit {
       const scoreWindSpeed100m = this.calculateScore(avgWindSpeed100m, normalWindSpeed100m);
       const scoreWindGusts10m = this.calculateScore(avgWindGusts10m, normalWindGusts10m);
 
-      console.log("Score temperature:", scoreTemp);
-      console.log("Score precipitation:", scorePrecipitation);
-      console.log("Score rain:", scoreRain);
-      console.log("Score snowfall:", scoreSnowfall);
-      console.log("Score snow depth:", scoreSnowDepth);
-      console.log("Score wind speed at 10m:", scoreWindSpeed10m);
-      console.log("Score wind speed at 100m:", scoreWindSpeed100m);
-      console.log("Score wind gusts at 10m:", scoreWindGusts10m);
-
-
-
+      this.sharedService.changeScoreTemp(scoreTemp);
+      this.sharedService.changeScorePrecipitation(scorePrecipitation);
+      this.sharedService.changeScoreRain(scoreRain);
+      this.sharedService.changeScoreSnowfall(scoreSnowfall);
+      this.sharedService.changeScoreSnowDepth(scoreSnowDepth);
+      this.sharedService.changeScoreWindSpeed10m(scoreWindSpeed10m);
+      this.sharedService.changeScoreWindSpeed100m(scoreWindSpeed100m);
+      this.sharedService.changeScoreWindGusts10m(scoreWindGusts10m);
     } catch (error) {
       console.error("Error fetching or calculating data:", error);
     }
@@ -281,4 +270,7 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  constructor(private sharedService: SharedService) {}
+
+  
 }
