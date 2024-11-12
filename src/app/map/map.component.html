@@ -1,0 +1,5 @@
+<div class="search-container">
+    <input type="text" [(ngModel)]="address" placeholder="Enter address" (keyup.enter)="searchAddress()">
+    <button (click)="searchAddress()">Search</button>
+  </div>
+  <div id="map" style="height: 600px;"></div>

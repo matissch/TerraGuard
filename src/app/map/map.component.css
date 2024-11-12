@@ -1,0 +1,22 @@
+.container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .search-container {
+    margin-bottom: 20px;
+  }
+  
+  input {
+    width: 300px;
+    padding: 10px;
+    margin-right: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+  }
+  
+  div[leaflet] {
+    height: 500px; /* Ensure the map container has a defined height */
+  }
