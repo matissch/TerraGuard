@@ -4,7 +4,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,11 +17,13 @@ import { MapComponent } from './map/map.component';
 import { FormsModule } from '@angular/forms';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    AppointmentFormComponent
   ],
   imports: [
     BrowserModule,
@@ -28,6 +34,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     MatInputModule,
     MatButtonModule,
     MatFormFieldModule,
+    MatProgressBarModule,
     MatSlideToggleModule
   ],
   providers: [],
