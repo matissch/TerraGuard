@@ -5,6 +5,15 @@ import * as proj4 from 'proj4';
 import 'proj4leaflet';
 import { fetchWeatherApi } from 'openmeteo';
 
+const normalTemperature = 10;
+const normalPrecipitation = 0.1;
+const normalRain = 0.1;
+const normalSnowfall = 0.01;
+const normalSnowDepth = 0.015;
+const normalWindSpeed10m = 10;
+const normalWindSpeed100m = 20;
+const normalWindGusts10m = 15;
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -191,6 +200,26 @@ export class MapComponent implements AfterViewInit {
     return numericValues.reduce((p, c) => p + c, 0) / numericValues.length;
   };
 
+  calculateScore(value: number, normalValue: number) {
+    // Berechne das Verhältnis in Prozent
+    const ratio = (value / normalValue) * 100;
+
+    // Bestimme den Score basierend auf den Schwellenwerten
+    let score;
+    // Normalisiere den Score basierend auf dem Verhältnis
+    if (ratio <= 100) {
+      // Falls avgTemp <= allTemp, normalisiere den Score zwischen 0 und 50
+      score = (ratio / 100) * 50;
+    } else if (ratio > 100) {
+      // Falls avgTemp > allTemp, normalisiere den Score zwischen 50 und 100
+      score = 50 + ((ratio - 100) / 100) * 50;
+      // Begrenze den Score auf maximal 100
+      if (score > 100) score = 100;
+    }
+    return Math.round(score); // Runden auf eine ganze Zahl
+
+  }
+
   // Main function to fetch data and calculate averages
   async getWeather(lat: number, lon: number) {
     try {
@@ -216,6 +245,27 @@ export class MapComponent implements AfterViewInit {
       console.log("Average wind speed at 10m:", avgWindSpeed10m);
       console.log("Average wind speed at 100m:", avgWindSpeed100m);
       console.log("Average wind gusts at 10m:", avgWindGusts10m);
+
+      const scoreTemp = this.calculateScore(avgTemp, normalTemperature);
+      const scorePrecipitation = this.calculateScore(avgPrecipitation, normalPrecipitation);
+      const scoreRain = this.calculateScore(avgRain, normalRain);
+      const scoreSnowfall = this.calculateScore(avgSnowfall, normalSnowfall);
+      const scoreSnowDepth = this.calculateScore(avgSnowDepth, normalSnowDepth);
+      const scoreWindSpeed10m = this.calculateScore(avgWindSpeed10m, normalWindSpeed10m);
+      const scoreWindSpeed100m = this.calculateScore(avgWindSpeed100m, normalWindSpeed100m);
+      const scoreWindGusts10m = this.calculateScore(avgWindGusts10m, normalWindGusts10m);
+
+      console.log("Score temperature:", scoreTemp);
+      console.log("Score precipitation:", scorePrecipitation);
+      console.log("Score rain:", scoreRain);
+      console.log("Score snowfall:", scoreSnowfall);
+      console.log("Score snow depth:", scoreSnowDepth);
+      console.log("Score wind speed at 10m:", scoreWindSpeed10m);
+      console.log("Score wind speed at 100m:", scoreWindSpeed100m);
+      console.log("Score wind gusts at 10m:", scoreWindGusts10m);
+
+
+
     } catch (error) {
       console.error("Error fetching or calculating data:", error);
     }
