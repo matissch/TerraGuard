@@ -6,7 +6,7 @@
     <mat-label>Geben Sie hier die Adresse ein</mat-label>
     <input matInput type="text" [(ngModel)]="address" (keyup.enter)="searchAddress()">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="searchAddress()">Suchen</button>
+  <button mat-raised-button color="primary" (click)="searchAddress()" style="background-color: rgb(0,0,143);">Suchen</button>
 </div>
 <div class="toggle-container" style="position: relative; padding-left: 150px; padding-bottom: 5px;">
   <mat-slide-toggle color="primary" name="hailToggle" [(ngModel)]="hail" (change)="toggleLayer($event)" style="margin-left: 10px;">Hagel</mat-slide-toggle>
