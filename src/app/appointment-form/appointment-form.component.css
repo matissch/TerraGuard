@@ -1,36 +1,37 @@
 
+
+mat-card {
+  width: 25%;
+  padding: 2%;
+  margin: 5%;
+}
+
+p {
+  color: white;
+  font-size: 1.5em;
+  background-color: rgb(168, 168, 168);
+  padding: 1%;
+  width: auto;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.allRecommendations {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
   
-  mat-card {
-    width: 25%;
-    padding: 2%;
-    margin: 5%;
-  }
+}
 
-  p {
-    color: white;
-    font-size: 1.5em;
-    background-color: rgb(168, 168, 168);
-    padding: 1%;
-    width: auto;
-    text-align: center;
-    border-radius: 10px;
-  }
-
-  .allRecommendations {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    
-  }
-
-  .recommendation{
-    width: 50%;
-    padding: 1%;
-    margin: 1%;
-  }
+.recommendation{
+width: 50%;
+padding: 1%;
+margin: 1%;
+}
 
 
+<<<<<<< Updated upstream
   .appointment {
     display: flex;
     justify-content: center;
@@ -43,6 +44,25 @@
     align-items: center;
     flex-direction: column;
   }
+=======
+.appointment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+::ng-deep .progress-bar-red .mat-progress-bar-fill::after {
+  background-color: red;
+}
+
+::ng-deep .progress-bar-orange .mat-progress-bar-fill::after {
+  background-color: orange;
+}
+
+::ng-deep .progress-bar-green .mat-progress-bar-fill::after {
+  background-color: green;
+}
+>>>>>>> Stashed changes
 
  
 

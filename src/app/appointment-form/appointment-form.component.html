@@ -5,8 +5,9 @@
         <p *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreTemp > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreTemp}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Niederschlag</h2>
@@ -14,7 +15,9 @@
         <p *ngIf="scorePrec >= 33.3 && scorePrec <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scorePrec > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
     </div>
 
     <div class="recommendation">
@@ -23,8 +26,9 @@
         <p *ngIf="scoreRain >= 33.3 && scoreRain <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreRain > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreRain}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Schnee</h2>
@@ -32,8 +36,9 @@
         <p *ngIf="scoreSnow >= 33.3 && scoreSnow <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreSnow > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreSnow}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Schneetiefe</h2>
@@ -41,8 +46,9 @@
         <p *ngIf="scoreSnowDepth >= 33.3 && scoreSnowDepth <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreSnowDepth > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreSnowDepth}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Windgeschwindigkeit 10m</h2>
@@ -50,8 +56,9 @@
         <p *ngIf="scoreWind10m >= 33.3 && scoreWind10m <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreWind10m > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreWind10m}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Windgeschwindigkeit 100m</h2>
@@ -59,8 +66,9 @@
         <p *ngIf="scoreWind100m >= 33.3 && scoreWind100m <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreWind100m > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreWind100m}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     <div class="recommendation">
         <h2>Windböe</h2>
@@ -68,8 +76,9 @@
         <p *ngIf="scoreWindGust >= 33.3 && scoreWindGust <= 66.6" style="background-color: orange;">mittel</p>
         <p *ngIf="scoreWindGust > 66.6" style="background-color: red;">hoch</p>
 
-        <mat-progress-bar mode="determinate" value={{scoreWindGust}}></mat-progress-bar>
-    </div>
+        <mat-progress-bar *ngIf="scoreTemp < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scoreTemp >= 33.3 && scoreTemp <= 66.6" style="height: 30px; border-radius: 5px;" class="progress-bar-orange" mode="determinate" value={{scorePrec}}></mat-progress-bar>
+        <mat-progress-bar *ngIf="scorePrec > 66.6" class="progress-bar-red" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scorePrec}}></mat-progress-bar>    </div>
 
     
 </div>
