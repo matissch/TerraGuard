@@ -9,10 +9,10 @@ import { SharedService } from '../shared.service';
 const normalTemperature = 10;
 const normalPrecipitation = 0.1;
 const normalRain = 0.1;
-const normalSnowfall = 0.01;
-const normalSnowDepth = 0.015;
+const normalSnowfall = 0.015;
+const normalSnowDepth = 0.1;
 const normalWindSpeed10m = 10;
-const normalWindSpeed100m = 20;
+const normalWindSpeed100m = 10;
 const normalWindGusts10m = 15;
 
 @Component({
@@ -171,17 +171,17 @@ export class MapComponent implements AfterViewInit {
   };
 
   calculateScore(value: number, normalValue: number) {
-    const ratio = (value / normalValue) * 100;
+    const ratio = value / normalValue;
+    let normalized;
 
-    let score;
-    if (ratio <= 100) {
-      score = (ratio / 100) * 50;
-    } else if (ratio > 100) {
-      score = 50 + ((ratio - 100) / 100) * 50;
-      if (score > 100) score = 100;
+    if (ratio >= 1) {
+      normalized = 50 + (ratio - 1) * 50;
+    } else {
+      normalized = 50 - (1 - ratio) * 50;
     }
-    return Math.round(score);
 
+    // Begrenze die Skala auf 0 - 100
+    return Math.max(0, Math.min(100, normalized));
   }
 
   async getWeather(lat: number, lon: number) {
@@ -228,12 +228,12 @@ export class MapComponent implements AfterViewInit {
       console.error("Error fetching or calculating data:", error);
     }
   }
-      
+
   toggleLayer(event: any) {
     const layer = event.source.name;
     const isChecked = event.checked;
     console.log(`${layer} layer is ${isChecked ? 'enabled' : 'disabled'}`);
-    
+
     // Update the state of the variables based on the toggle
     if (layer === 'hailToggle') {
       this.hail = isChecked;
@@ -270,7 +270,7 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService) { }
 
-  
+
 }
