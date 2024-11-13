@@ -1,15 +1,89 @@
 <div class="search-title-container">
-  <h1 class="centered-title">Search your address!</h1>
+  <h1 class="centered-title">Suchen Sie Ihre Adresse!</h1>
 </div>
 <div class="search-container">
   <mat-form-field appearance="outline">
-    <mat-label>Enter address</mat-label>
+    <mat-label>Geben Sie hier die Adresse ein</mat-label>
     <input matInput type="text" [(ngModel)]="address" (keyup.enter)="searchAddress()">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="searchAddress()">Search</button>
+  <button mat-raised-button color="primary" (click)="searchAddress()">Suchen</button>
 </div>
-<div class="toggle-container" style="position: relative; padding-left: 150px;">
-  <mat-slide-toggle color="primary" name="hailToggle" [(ngModel)]="hail" (change)="toggleLayer($event)">Hail</mat-slide-toggle>
-  <mat-slide-toggle color="primary" name="rainToggle" [(ngModel)]="rain" (change)="toggleLayer($event)">Rain</mat-slide-toggle>
+<div class="toggle-container" style="position: relative; padding-left: 150px; padding-bottom: 5px;">
+  <mat-slide-toggle color="primary" name="hailToggle" [(ngModel)]="hail" (change)="toggleLayer($event)" style="margin-left: 10px;">Hagel</mat-slide-toggle>
+  <mat-slide-toggle color="primary" name="rainToggle" [(ngModel)]="rain" (change)="toggleLayer($event)" style="margin-left: 10px;">Oberflächenabfluss</mat-slide-toggle>
 </div>
-<div id="map" style="width: 80%; margin: 0 auto; height: 600px; border-radius: 10px;"></div>
+<div id="map" style="width: 80%; margin: 0 auto; height: 600px; border-radius: 10px;">
+  <div class="leaflet-top leaflet-right">
+    <div id="info legend leaflet-control" style="background-color: white; opacity: 0.75; margin-right: 10px; margin-top: 10px">
+        <div>
+          <strong style="margin-left: 5px">Legende</strong>
+        </div>
+        <div *ngIf="hail">
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #7A0177;"></div>
+            <!-- White span -->
+            <span class="legend-text">> 5cm Korngrösse</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #C51B8A;"></div>
+            <!-- White span -->
+            <span class="legend-text">4 - 5cm Korngrösse</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #F768A1;"></div>
+            <!-- White span -->
+            <span class="legend-text">3 - 4cm Korngrösse</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #FA9FB5;"></div>
+            <!-- White span -->
+            <span class="legend-text">2 - 3cm Korngrösse</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #FCC5C0;"></div>
+            <!-- White span -->
+            <span class="legend-text">1 - 2cm Korngrösse</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #FEEBE2;"></div>
+            <!-- White span -->
+            <span class="legend-text">< 1cm Korngrösse</span>
+          </div>
+        </div>
+        <div *ngIf="rain">
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #FFBDFF;"></div>
+            <!-- White span -->
+            <span class="legend-text">0 < h <= 0.1 Fliesstiefe in Meter</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #DF73FF;"></div>
+            <!-- White span -->
+            <span class="legend-text">0.1 < h <= 0.25 Fliesstiefe in Meter</span>
+          </div>
+
+          <div style="display: flex; align-items: center;">
+            <!-- Red square -->
+            <div class="square" style="background: #8400A8;"></div>
+            <!-- White span -->
+            <span class="legend-text">0.25 < h Fliesstiefe in Meter</span>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
