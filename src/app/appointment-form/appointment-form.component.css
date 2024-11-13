@@ -31,24 +31,18 @@ margin: 1%;
 }
 
 
-<<<<<<< Updated upstream
-  .appointment {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
 
-  .booking {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-=======
 .appointment {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.booking {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 ::ng-deep .progress-bar-red .mat-progress-bar-fill::after {
@@ -62,8 +56,6 @@ margin: 1%;
 ::ng-deep .progress-bar-green .mat-progress-bar-fill::after {
   background-color: green;
 }
->>>>>>> Stashed changes
-
  
 
   
