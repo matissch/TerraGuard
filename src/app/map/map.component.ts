@@ -102,6 +102,10 @@ export class MapComponent implements AfterViewInit {
       })
     });
 
+    // Remove all previous markers from the map
+    this.layers.forEach(layer => {
+      this.map.removeLayer(layer);
+    });
     // Add the marker to the map and to the layers array
     newMarker.addTo(this.map);
     this.layers.push(newMarker); // Keep track of all markers
