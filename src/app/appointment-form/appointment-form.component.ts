@@ -29,7 +29,7 @@ export class AppointmentFormComponent implements OnInit {
   getDanger(score: number): string {
     let retVal = "";
     if (score < 33.3) {
-      retVal = "normale Gefahr";
+      retVal = "niedrige Gefahr";
     } else if (score >= 33.3 && score < 66.6) {
       retVal = "mittlere Gefahr";
     } else {
