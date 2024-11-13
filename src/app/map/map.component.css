@@ -56,3 +56,12 @@
   padding: 5px;
   border-radius: 3px;
 }
+
+.legend-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-left: 5px;
+  padding-top: 5px;
+}
