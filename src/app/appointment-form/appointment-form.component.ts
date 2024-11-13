@@ -81,7 +81,7 @@ export class AppointmentFormComponent implements OnInit {
 
 @Component({
   selector: 'bottom-sheet',
-  templateUrl: 'bottom-sheet.html',
+  templateUrl: './bottom-sheet.html',
 })
 export class BottomSheet {
   constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheet>) {}

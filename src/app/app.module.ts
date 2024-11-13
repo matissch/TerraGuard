@@ -4,16 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatExpansionModule} from '@angular/material/expansion';
-import {MatBottomSheetModule} from '@angular/material/bottom-sheet';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatListModule } from '@angular/material/list'; // Import MatListModule
-import {MatIconModule} from '@angular/material/icon';
-
-
-
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatIconModule } from '@angular/material/icon';
 
 
 
@@ -23,19 +19,16 @@ import { MapComponent } from './map/map.component';
 import { FormsModule } from '@angular/forms';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppointmentFormComponent } from './appointment-form/appointment-form.component';
+import { AppointmentFormComponent, BottomSheet } from './appointment-form/appointment-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
-    AppointmentFormComponent
+    AppointmentFormComponent,
+    BottomSheet
   ],
   imports: [
-    BrowserModule,
-    FormsModule,
-    LeafletModule,
-    BrowserAnimationsModule,
     MatCardModule,
     MatInputModule,
     MatButtonModule,
@@ -45,7 +38,11 @@ import { AppointmentFormComponent } from './appointment-form/appointment-form.co
     MatExpansionModule,
     MatBottomSheetModule,
     MatListModule,
-    MatIconModule
+    MatIconModule,
+    BrowserModule,
+    FormsModule,
+    LeafletModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
