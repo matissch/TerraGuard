@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
+import { combineLatest } from 'rxjs';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-appointment-form',
@@ -16,18 +18,76 @@ export class AppointmentFormComponent implements OnInit {
   scoreWind100m: number;
   scoreWindGust: number;
 
-  constructor(private sharedService: SharedService) {}
+  dangerTemp: string;
+  dangerPrec: string;
+  dangerRain: string;
+  dangerSnow: string;
+  dangerSnowDepth: string;
+  dangerWind10: string;
+  dangerWind100: string;
+  dangerGust: string;
 
-  ngOnInit() {
-    this.sharedService.currentScoreTemp.subscribe(scoreTemp => this.scoreTemp = scoreTemp);
-    this.sharedService.currentScorePrecipitation.subscribe(scorePrec => this.scorePrec = scorePrec);
-    this.sharedService.currentScoreRain.subscribe(scoreRain => this.scoreRain = scoreRain);
-    this.sharedService.currentScoreSnowfall.subscribe(scoreSnow => this.scoreSnow = scoreSnow);
-    this.sharedService.currentScoreSnowDepth.subscribe(scoreSnowDepth => this.scoreSnowDepth = scoreSnowDepth);
-    this.sharedService.currentScoreWind10m.subscribe(scoreWind10m => this.scoreWind10m = scoreWind10m);
-    this.sharedService.currentScoreWind100m.subscribe(scoreWind100m => this.scoreWind100m = scoreWind100m);
-    this.sharedService.currentScoreWindGust.subscribe(scoreWindGust => this.scoreWindGust = scoreWindGust);
-
+  getDanger(score: number): string {
+    let retVal = "";
+    if (score < 33.3) {
+      retVal = "niedrige Gefahr";
+    } else if (score >= 33.3 && score < 66.6) {
+      retVal = "mittlere Gefahr";
+    } else {
+      retVal = "hohe Gefahr";
+    }
+    return retVal;
   }
 
+  constructor(private sharedService: SharedService, private _bottomSheet: MatBottomSheet) {}
+
+  ngOnInit() {
+    combineLatest([
+      this.sharedService.currentScoreTemp,
+      this.sharedService.currentScorePrecipitation,
+      this.sharedService.currentScoreRain,
+      this.sharedService.currentScoreSnowfall,
+      this.sharedService.currentScoreSnowDepth,
+      this.sharedService.currentScoreWind10m,
+      this.sharedService.currentScoreWind100m,
+      this.sharedService.currentScoreWindGust
+    ]).subscribe(([scoreTemp, scorePrec, scoreRain, scoreSnow, scoreSnowDepth, scoreWind10m, scoreWind100m, scoreWindGust]) => {
+      this.scoreTemp = scoreTemp;
+      this.scorePrec = scorePrec;
+      this.scoreRain = scoreRain;
+      this.scoreSnow = scoreSnow;
+      this.scoreSnowDepth = scoreSnowDepth;
+      this.scoreWind10m = scoreWind10m;
+      this.scoreWind100m = scoreWind100m;
+      this.scoreWindGust = scoreWindGust;
+  
+      // Update the danger levels
+      this.dangerTemp = this.getDanger(this.scoreTemp);
+      this.dangerPrec = this.getDanger(this.scorePrec);
+      this.dangerRain = this.getDanger(this.scoreRain);
+      this.dangerSnow = this.getDanger(this.scoreSnow);
+      this.dangerSnowDepth = this.getDanger(this.scoreSnowDepth);
+      this.dangerWind10 = this.getDanger(this.scoreWind10m);
+      this.dangerWind100 = this.getDanger(this.scoreWind100m);
+      this.dangerGust = this.getDanger(this.scoreWindGust);
+    });
+  }
+
+  openBottomSheet(): void {
+    this._bottomSheet.open(BottomSheet);
+  }
+
+}
+
+@Component({
+  selector: 'bottom-sheet',
+  templateUrl: './bottom-sheet.html',
+})
+export class BottomSheet {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheet>) {}
+
+  openLink(event: MouseEvent): void {
+    this._bottomSheetRef.dismiss();
+    event.preventDefault();
+  }
 }

@@ -1,10 +1,11 @@
 
-  
-  mat-card {
-    width: 25%;
-    padding: 2%;
-    margin: 5%;
-  }
+
+mat-card {
+  width: 25%;
+  padding: 2%;
+  margin: 5%;
+}
+
 
   p {
     color: white;
@@ -45,6 +46,46 @@
     text-align: center;
   }
 
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Elemente an den beiden Seiten ausrichten */
+  align-items: center; /* Vertikal zentrieren (optional) */
+}
+
+::ng-deep .progress-bar-red .mat-progress-bar-fill::after {
+  background-color: red;
+}
+
+::ng-deep .progress-bar-orange .mat-progress-bar-fill::after {
+  background-color: orange;
+}
+
+::ng-deep .progress-bar-green .mat-progress-bar-fill::after {
+  background-color: green;
+}
  
+.centered-title {
+  margin-top: 0;
+  text-align: center;
+  font-size: 36px;
+  padding-top: 50px;
+}
+
+.title-container {
+  display: flex;             /* Flexbox aktivieren */
+  align-items: center;       /* Vertikale Zentrierung */
+  justify-content: space-between; /* Abstand zwischen Titel und Button */
+  padding: 8px 16px;         /* Optional: Innenabstand */
+}
+
+.title {
+  margin: 0;                 /* Entfernt Standardabstände */
+  font-weight: bold;         /* Macht den Titel fett */
+}
+
+.action-button {
+  margin-left: auto;         /* Drückt den Button nach rechts */
+}
+
 
   

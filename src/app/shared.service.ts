@@ -14,6 +14,25 @@ export class SharedService {
   private scoreWind100mSource = new BehaviorSubject<number>(0);
   private scoreWindGustSource = new BehaviorSubject<number>(0);
 
+  private dangerTemp = new BehaviorSubject<string>("");
+  private dangerPrec = new BehaviorSubject<string>("");
+  private dangerRain = new BehaviorSubject<string>("");
+  private dangerSnow = new BehaviorSubject<string>("");
+  private dangerSnowDepth = new BehaviorSubject<string>("");
+  private dangerWind10 = new BehaviorSubject<string>("");
+  private dangerWind100 = new BehaviorSubject<string>("");
+  private dangerGust = new BehaviorSubject<string>("");
+
+
+currentDangerTemp = this.dangerTemp.asObservable();
+currentDangerPrec = this.dangerPrec.asObservable();
+currentDangerRain = this.dangerRain.asObservable();
+currentDangerSnow = this.dangerSnow.asObservable();
+currentDangerSnowDepth = this.dangerSnowDepth.asObservable();
+currentDangerWind10 = this.dangerWind10.asObservable();
+currentDangerWind100 = this.dangerWind100.asObservable();
+currentDangerGust = this.dangerGust.asObservable();
+
   currentScoreTemp = this.scoreTempSource.asObservable();
   currentScorePrecipitation = this.scorePrecipitationSource.asObservable();
   currentScoreRain = this.scoreRainSource.asObservable();
@@ -55,5 +74,12 @@ export class SharedService {
 
   changeScoreWindGusts10m(score: number) {
     this.scoreWindGustSource.next(score);
+  }
+  getDanger(score: number){
+    var retVal = ""
+    if(score < 33.3){retVal ="normale Gefahr"}
+    else if (score >= 33.3 && score < 66.6){retVal = "mittlere Gefahr"}
+    else{retVal = "hohe Gefahr"}
+    return retVal
   }
 }
