@@ -20,16 +20,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have as title 'search-maps'`, () => {
+  it(`should have as title 'terra-guard'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('search-maps');
+    expect(app.title).toEqual('terra-guard');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('search-maps app is running!');
+    expect(compiled.querySelector('.content span').textContent).toContain('terra-guard app is running!');
   });
 });

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "search-maps": {
+    "terra-guard": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/search-maps",
+            "outputPath": "dist/terra-guard",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -64,18 +64,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "search-maps:build"
+            "browserTarget": "terra-guard:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "search-maps:build:production"
+              "browserTarget": "terra-guard:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "search-maps:build"
+            "browserTarget": "terra-guard:build"
           }
         },
         "test": {
@@ -114,16 +114,16 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "search-maps:serve"
+            "devServerTarget": "terra-guard:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "search-maps:serve:production"
+              "devServerTarget": "terra-guard:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "search-maps"
+  "defaultProject": "terra-guard"
 }
