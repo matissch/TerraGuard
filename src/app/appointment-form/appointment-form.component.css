@@ -29,7 +29,11 @@ width: 50%;
 padding: 1%;
 margin: 1%;
 }
-
+.flex-container {
+  display: flex;
+  justify-content: space-between; /* Elemente an den beiden Seiten ausrichten */
+  align-items: center; /* Vertikal zentrieren (optional) */
+}
 
 
 .appointment {
