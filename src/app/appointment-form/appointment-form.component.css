@@ -61,5 +61,28 @@ margin: 1%;
   background-color: green;
 }
  
+.centered-title {
+  margin-top: 0;
+  text-align: center;
+  font-size: 36px;
+  padding-top: 50px;
+}
+
+.title-container {
+  display: flex;             /* Flexbox aktivieren */
+  align-items: center;       /* Vertikale Zentrierung */
+  justify-content: space-between; /* Abstand zwischen Titel und Button */
+  padding: 8px 16px;         /* Optional: Innenabstand */
+}
+
+.title {
+  margin: 0;                 /* Entfernt Standardabstände */
+  font-weight: bold;         /* Macht den Titel fett */
+}
+
+.action-button {
+  margin-left: auto;         /* Drückt den Button nach rechts */
+}
+
 
   

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedService } from '../shared.service';
 import { combineLatest } from 'rxjs';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 
 @Component({
   selector: 'app-appointment-form',
@@ -38,7 +39,7 @@ export class AppointmentFormComponent implements OnInit {
     return retVal;
   }
 
-  constructor(private sharedService: SharedService) {}
+  constructor(private sharedService: SharedService, private _bottomSheet: MatBottomSheet) {}
 
   ngOnInit() {
     combineLatest([
@@ -72,4 +73,21 @@ export class AppointmentFormComponent implements OnInit {
     });
   }
 
+  openBottomSheet(): void {
+    this._bottomSheet.open(BottomSheet);
+  }
+
+}
+
+@Component({
+  selector: 'bottom-sheet',
+  templateUrl: 'bottom-sheet.html',
+})
+export class BottomSheet {
+  constructor(private _bottomSheetRef: MatBottomSheetRef<BottomSheet>) {}
+
+  openLink(event: MouseEvent): void {
+    this._bottomSheetRef.dismiss();
+    event.preventDefault();
+  }
 }

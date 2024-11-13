@@ -1,4 +1,8 @@
 <div class="allRecommendations">
+    <div class="title-container">
+        <h1 class="centered-title" style="padding-bottom: 30px; padding-right: 20px;">Gefahren</h1>
+        <button mat-mini-fab color="white" class="info-button" (click)="openBottomSheet()"><mat-icon>info</mat-icon></button>
+    </div>
     <div class="recommendation" *ngIf="scoreTemp > 0">
         <div class="flex-container">
             <h2>Temperatur</h2>
@@ -29,7 +33,7 @@
 
     <div class="recommendation" *ngIf="scoreSnow > 0">
         <div class="flex-container">
-            <h2>Schnee</h2>
+            <h2>Schneefall</h2>
             <p>{{dangerSnow}}</p>
         </div>
         <mat-progress-bar *ngIf="scoreSnow < 33.3" class="progress-bar-green" style="height: 30px; border-radius: 5px;" mode="determinate" value={{scoreSnow}}></mat-progress-bar>
